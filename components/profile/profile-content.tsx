@@ -266,62 +266,66 @@ export function ProfileContent({ user }: ProfileContentProps) {
                 ) : (
                   <div className="divide-y">
                     {orders.map((o) => (
-                      <div key={o.id} className="py-4 flex items-center gap-4">
-                        <div className="min-w-[120px]">
-                          <div className="text-sm text-muted-foreground">
-                            Order
+                      <div
+                        key={o.id}
+                        className="py-4 flex flex-col sm:flex-row sm:items-center sm:gap-4 items-center gap-4">
+                        <div className="flex flex-wrap gap-4 sm:flex-nowrap sm:items-center sm:gap-6">
+                          <div className="min-w-[120px]">
+                            <div className="text-sm text-muted-foreground">
+                              Order
+                            </div>
+                            <div className="font-medium">{o.orderNumber}</div>
                           </div>
-                          <div className="font-medium">{o.orderNumber}</div>
-                        </div>
 
-                        <div className="hidden sm:block min-w-[150px]">
-                          <div className="text-sm text-muted-foreground">
-                            Date
+                          <div className="hidden sm:block min-w-[150px]">
+                            <div className="text-sm text-muted-foreground">
+                              Date
+                            </div>
+                            <div className="font-medium">
+                              {new Date(o.createdAt).toLocaleDateString()}
+                            </div>
                           </div>
-                          <div className="font-medium">
-                            {new Date(o.createdAt).toLocaleDateString()}
-                          </div>
-                        </div>
 
-                        <div className="hidden sm:block min-w-[100px]">
-                          <div className="text-sm text-muted-foreground">
-                            Items
+                          <div className="hidden sm:block min-w-[100px]">
+                            <div className="text-sm text-muted-foreground">
+                              Items
+                            </div>
+                            <div className="font-medium">
+                              {o.orderItems.length}
+                            </div>
                           </div>
-                          <div className="font-medium">
-                            {o.orderItems.length}
-                          </div>
-                        </div>
 
-                        <div className="min-w-[120px]">
-                          <div className="text-sm text-muted-foreground">
-                            Total
+                          <div className="min-w-[120px]">
+                            <div className="text-sm text-muted-foreground">
+                              Total
+                            </div>
+                            <div className="font-medium">
+                              {fmtNGN(Number(o.totalAmount || 0))}
+                            </div>
                           </div>
-                          <div className="font-medium">
-                            {fmtNGN(Number(o.totalAmount || 0))}
+
+                          <div className="min-w-[110px]">
+                            <Badge className={statusBadge(o.status)}>
+                              {o.status}
+                            </Badge>
                           </div>
-                        </div>
 
-                        <div className="min-w-[110px]">
-                          <Badge className={statusBadge(o.status)}>
-                            {o.status}
-                          </Badge>
-                        </div>
-
-                        <div className="ml-auto flex items-center gap-2">
-                          <Button variant="outline" size="sm" asChild>
-                            <Link href={`/orders?focus=${o.orderNumber}`}>
-                              View <ChevronRight className="ml-1 h-4 w-4" />
-                            </Link>
-                          </Button>
-                          <Button variant="outline" size="sm" asChild>
-                            <a
-                              href={`/api/orders/${o.orderNumber}/receipt`}
-                              target="_blank"
-                              rel="noopener">
-                              <Download className="mr-2 h-4 w-4" />
-                              Receipt
-                            </a>
-                          </Button>
+                          <div className="mt-3 sm:mt-0 sm:ml-auto flex md:grid gap-2">
+                            <Button variant="outline" size="sm" asChild>
+                              <Link href={`/orders?focus=${o.orderNumber}`}>
+                                View <ChevronRight className="ml-1 h-4 w-4" />
+                              </Link>
+                            </Button>
+                            <Button variant="outline" size="sm" asChild>
+                              <a
+                                href={`/api/orders/${o.orderNumber}/receipt`}
+                                target="_blank"
+                                rel="noopener">
+                                <Download className="mr-2 h-4 w-4" />
+                                Receipt
+                              </a>
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     ))}
