@@ -35,3 +35,13 @@ export const statusBadge = (status: string) => {
       return "bg-neutral-100 text-neutral-700"; // pending/unknown
   }
 };
+
+ export const getInitials = (name?: string) => {
+   if (!name) return "U";
+   return name
+     .split(" ")
+     .map((n) => n[0])
+     .join("")
+     .toUpperCase()
+     .slice(0, 2);
+ };
