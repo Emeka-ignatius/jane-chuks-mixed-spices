@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Users, Heart, Sparkles } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Users, Heart, Sparkles } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 const categories = [
   {
@@ -44,23 +44,28 @@ const categories = [
     color: "from-primary to-primary/80",
     badge: "Family Blend",
   },
-]
+];
 
 export function CategoryShowcase() {
   return (
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center space-y-4 mb-16">
-          <Badge variant="secondary" className="inline-flex items-center space-x-2 px-4 py-2">
+          <Badge
+            variant="secondary"
+            className="inline-flex items-center space-x-2 px-4 py-2">
             <Sparkles className="h-4 w-4" />
             <span>Our Categories</span>
           </Badge>
 
-          <h2 className="text-3xl md:text-4xl font-bold gradient-text text-balance">Spices Crafted for Every Need</h2>
+          <h2 className="text-3xl md:text-4xl font-bold gradient-text text-balance">
+            Spices Crafted for Every Need
+          </h2>
 
           <p className="section-text text-muted-foreground max-w-2xl mx-auto text-pretty">
-            Discover our specialized spice blends, each carefully formulated with premium natural ingredients to support
-            specific health and wellness goals.
+            Discover our specialized spice blends, each carefully formulated
+            with premium natural ingredients to support specific health and
+            wellness goals.
           </p>
         </div>
 
@@ -69,8 +74,7 @@ export function CategoryShowcase() {
             <Card
               key={category.id}
               className="group interactive-card border-0 shadow-lg overflow-hidden"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
+              style={{ animationDelay: `${index * 0.1}s` }}>
               <div className={`h-2 bg-gradient-to-r ${category.color}`} />
 
               <CardContent className="p-6 space-y-6">
@@ -81,9 +85,12 @@ export function CategoryShowcase() {
                       {category.badge}
                     </Badge>
                     <h3 className="text-xl font-bold">{category.title}</h3>
-                    <p className="text-sm text-muted-foreground font-medium">{category.subtitle}</p>
+                    <p className="text-sm text-muted-foreground font-medium">
+                      {category.subtitle}
+                    </p>
                   </div>
-                  <div className={`p-3 rounded-xl bg-gradient-to-br ${category.color}`}>
+                  <div
+                    className={`p-3 rounded-xl bg-gradient-to-br ${category.color}`}>
                     <category.icon className="h-5 w-5 text-white" />
                   </div>
                 </div>
@@ -99,13 +106,19 @@ export function CategoryShowcase() {
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-muted-foreground leading-relaxed text-pretty">{category.description}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed text-pretty">
+                  {category.description}
+                </p>
 
                 {/* Price & CTA */}
                 <div className="flex items-center justify-between pt-2">
                   <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground">Starting from</p>
-                    <p className="text-2xl font-bold text-primary">{category.price}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Starting from
+                    </p>
+                    <p className="text-2xl font-bold text-primary">
+                      {category.price}
+                    </p>
                   </div>
 
                   <Button className="group/btn" asChild>
@@ -131,5 +144,5 @@ export function CategoryShowcase() {
         </div>
       </div>
     </section>
-  )
+  );
 }

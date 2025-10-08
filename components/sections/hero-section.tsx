@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ChevronLeft, ChevronRight, Sparkles, Leaf, Heart } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ChevronLeft, ChevronRight, Sparkles, Leaf, Heart } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 const heroSlides = [
   {
@@ -41,27 +41,29 @@ const heroSlides = [
     cta: "Discover Men's Blend",
     accent: "secondary",
   },
-]
+];
 
 export function HeroSection() {
-  const [currentSlide, setCurrentSlide] = useState(0)
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-  }
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
-  }
+    setCurrentSlide(
+      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
+    );
+  };
 
-  const currentSlideData = heroSlides[currentSlide]
+  const currentSlideData = heroSlides[currentSlide];
 
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-background via-background to-muted">
@@ -82,25 +84,31 @@ export function HeroSection() {
                   currentSlideData.accent === "primary"
                     ? "bg-primary/10 text-primary"
                     : currentSlideData.accent === "accent"
-                      ? "bg-accent/10 text-accent"
-                      : "bg-secondary/10 text-secondary"
-                }`}
-              >
+                    ? "bg-accent/10 text-accent"
+                    : "bg-secondary/10 text-secondary"
+                }`}>
                 <Sparkles className="h-4 w-4" />
                 <span>{currentSlideData.badge}</span>
               </Badge>
 
-              <h1 className="hero-text font-bold gradient-text text-balance">{currentSlideData.title}</h1>
+              <h1 className="md:hero-text text-4xl font-bold gradient-text text-balance">
+                {currentSlideData.title}
+              </h1>
 
               <h2 className="text-xl md:text-2xl font-semibold text-muted-foreground text-balance">
                 {currentSlideData.subtitle}
               </h2>
 
-              <p className="section-text text-muted-foreground max-w-2xl text-pretty">{currentSlideData.description}</p>
+              <p className="section-text text-muted-foreground max-w-2xl text-pretty">
+                {currentSlideData.description}
+              </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button size="lg" className="group relative overflow-hidden glow-animation" asChild>
+              <Button
+                size="lg"
+                className="group relative overflow-hidden glow-animation"
+                asChild>
                 <Link href="/products">
                   <span className="relative z-10">{currentSlideData.cta}</span>
                   <div className="absolute inset-0 shimmer-effect" />
@@ -108,7 +116,7 @@ export function HeroSection() {
               </Button>
 
               <Button variant="outline" size="lg" asChild>
-                <Link href="/about">Learn More</Link>
+                <Link href="/static/about">Learn More</Link>
               </Button>
             </div>
 
@@ -119,7 +127,9 @@ export function HeroSection() {
                 { icon: Heart, text: "Health Focused" },
                 { icon: Sparkles, text: "Premium Quality" },
               ].map((feature, index) => (
-                <div key={index} className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <div
+                  key={index}
+                  className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <feature.icon className="h-4 w-4 text-primary" />
                   <span>{feature.text}</span>
                 </div>
@@ -147,7 +157,11 @@ export function HeroSection() {
 
         {/* Slide Controls */}
         <div className="flex items-center justify-center space-x-4 mt-12">
-          <Button variant="outline" size="icon" onClick={prevSlide} className="rounded-full bg-transparent">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={prevSlide}
+            className="rounded-full bg-transparent">
             <ChevronLeft className="h-4 w-4" />
           </Button>
 
@@ -165,11 +179,15 @@ export function HeroSection() {
             ))}
           </div>
 
-          <Button variant="outline" size="icon" onClick={nextSlide} className="rounded-full bg-transparent">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={nextSlide}
+            className="rounded-full bg-transparent">
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </div>
     </section>
-  )
+  );
 }

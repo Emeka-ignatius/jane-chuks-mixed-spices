@@ -39,8 +39,8 @@ export function Navigation() {
     { href: "/products", label: "Products" },
     { href: "/static/about", label: "About Us" },
     { href: "/static/services", label: "Services" },
-    { href: "/testimonials", label: "Testimonials" },
-    { href: "/contact", label: "Contact" },
+    // { href: "/testimonials", label: "Testimonials" },
+    { href: "/static/contact", label: "Contact" },
   ];
 
   useEffect(() => {
