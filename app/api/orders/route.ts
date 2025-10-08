@@ -96,7 +96,7 @@ export async function POST(request: Request) {
       where: { userId: user.id },
     });
 
-    await db.user.update({
+    await db.user.updateMany({
       where: { id: user.id, role: "VISITOR" },
       data: { role: "CUSTOMER" },
     });

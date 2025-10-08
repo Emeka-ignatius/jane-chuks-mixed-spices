@@ -15,6 +15,6 @@ export default async function CartPage() {
 }
 
 export const metadata = {
-  title: "Shopping Cart - JaneChucks Mixed Spices",
+  title: "Shopping Cart - JaneChuks Mixed Spices",
   description: "Review your selected spice blends and proceed to checkout",
 };
