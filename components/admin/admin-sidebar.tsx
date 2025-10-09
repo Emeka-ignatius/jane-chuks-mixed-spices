@@ -1,119 +1,100 @@
+// components/admin/admin-sidebar.tsx
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  LayoutDashboard,
-  Package,
-  ShoppingCart,
-  Users,
-  BarChart3,
-  Settings,
-  Menu,
-  X,
-  LogOut,
-} from "lucide-react";
-import { logoutAction } from "@/app/actions/auth";
-import { toast } from "sonner";
-
-const navigation = [
-  { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Products", href: "/admin/products", icon: Package },
-  { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
-  { name: "Customers", href: "/admin/customers", icon: Users },
-  { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
-];
+import { LogOut, LogIn } from "lucide-react";
+import { adminNavItems } from "@/lib/const";
+import { useAuth } from "@/components/auth/auth-provider";
 
 export function AdminSidebar() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const handleLogout = async () => {
-    setIsLoading(true);
-    try {
-      await logoutAction();
-      toast.success("Logged out successfully");
-    } catch (error) {
-      toast.error("Failed to logout");
-      setIsLoading(false);
-    }
-  };
+  const router = useRouter();
+  const { user, isLoading, signOut } = useAuth();
+
+  const isLoggedIn = !!user;
+  const isAdmin = user?.role === "ADMIN" || user?.isAdmin === true;
+
+  // Optional: show nothing while checking auth to avoid flicker
+  if (isLoading) {
+    return null;
+  }
+
   return (
-    <>
-      {/* Mobile menu button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="lg:hidden fixed top-4 left-4 z-50"
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-        {isMobileMenuOpen ? (
-          <X className="h-6 w-6" />
-        ) : (
-          <Menu className="h-6 w-6" />
-        )}
-      </Button>
+    <div
+      className={cn(
+        "hidden md:flex md:flex-col w-64 flex-shrink-0 border-r border-neutral-200 bg-white"
+      )}>
+      <div className="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
+        {/* Logo */}
+        <div className="flex items-center justify-center h-16 px-4 border-b border-neutral-200">
+          <h1 className="text-xl font-bold text-spice-brown">
+            JaneChucks Admin
+          </h1>
+        </div>
 
-      {/* Sidebar */}
-      <div
-        className={cn(
-          "fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-neutral-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0",
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        )}>
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="flex items-center justify-center h-16 px-4 border-b border-neutral-200">
-            <h1 className="text-xl font-bold text-spice-brown">
-              JaneChucks Admin
-            </h1>
-          </div>
-
-          {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-2">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors",
-                    isActive
-                      ? "bg-spice-orange text-white"
-                      : "text-neutral-700 hover:bg-neutral-100"
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}>
-                  <item.icon className="mr-3 h-5 w-5" />
-                  {item.name}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Logout */}
-          <div className="p-4 border-t border-neutral-200">
-            <Button
-              variant="ghost"
-              onClick={handleLogout}
-              className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50">
-              <LogOut className="mr-3 h-5 w-5" />
-              Logout
+        {/* If not logged in, show Login CTA and stop */}
+        {!isLoggedIn ? (
+          <div className="flex-1 p-4 flex flex-col items-center justify-center gap-3">
+            <p className="text-sm text-neutral-600">You’re not signed in</p>
+            <Button asChild className="w-full">
+              <Link href="/admin/login">
+                <LogIn className="mr-2 h-4 w-4" />
+                Login
+              </Link>
             </Button>
           </div>
-        </div>
-      </div>
+        ) : !isAdmin ? (
+          // If logged-in but not admin, show friendly block
+          <div className="flex-1 p-4 flex flex-col items-center justify-center gap-3">
+            <p className="text-sm text-neutral-600">Admin access required</p>
+            <Button asChild variant="outline" className="w-full bg-transparent">
+              <Link href="/">Go Home</Link>
+            </Button>
+          </div>
+        ) : (
+          <>
+            {/* Navigation */}
+            <nav className="flex-1 px-4 py-6 space-y-6">
+              {adminNavItems.map((item) => {
+                const isActive = pathname === item.href;
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors",
+                      isActive
+                        ? "bg-primary text-white"
+                        : "text-neutral-700 hover:bg-neutral-100"
+                    )}>
+                    <Icon className="mr-3 h-5 w-5" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
 
-      {/* Mobile overlay */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black bg-opacity-50 lg:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-    </>
+            {/* Logout */}
+            <div className="p-4 border-t border-neutral-200">
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+                onClick={async () => {
+                  await signOut(); // << use provider signOut (updates context immediately)
+                  window.dispatchEvent(new Event("auth:changed")); // notify anyone listening
+                  router.push("/admin/login");
+                }}>
+                <LogOut className="mr-3 h-5 w-5" />
+                Logout
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
   );
 }

@@ -18,7 +18,7 @@ import {
 import { OrderTrackingModal } from "./order-tracking-modal";
 import { getUserOrders } from "@/app/actions/user";
 import { toast } from "sonner";
-import { statusBadge } from "@/lib/utils";
+import { fmtDate, fmtNGN, statusBadge } from "@/lib/utils";
 
 type Order = {
   id: string;
@@ -141,13 +141,8 @@ export function OrdersContent() {
                     </div>
 
                     <div className="text-sm text-neutral-600">
-                      <p>
-                        Order Date:{" "}
-                        {new Date(order.createdAt).toLocaleDateString()}
-                      </p>
-                      <p>
-                        Total: ₦{Number(order.totalAmount).toLocaleString()}
-                      </p>
+                      <p>Order Date: {fmtDate(order.createdAt)}</p>
+                      <p>Total: {fmtNGN(order.totalAmount)}</p>
                       {order.trackingNumber && (
                         <p>Tracking: {order.trackingNumber}</p>
                       )}

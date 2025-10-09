@@ -9,6 +9,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Suspense } from "react";
 import { AuthProvider } from "@/components/auth/auth-provider";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: "JaneChuks Mixed Spices - Premium Natural Spice Blends",
@@ -24,10 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+        className={`font-sans ${GeistSans.variable} ${GeistMono.variable}   antialiased`}>
         <AuthProvider>
           <Suspense fallback={<div>Loading...</div>}>
             <Navigation />
+            <NextTopLoader color="#d86d38" showSpinner={false} />
             <main className="min-h-screen">{children}</main>
             <Footer />
           </Suspense>

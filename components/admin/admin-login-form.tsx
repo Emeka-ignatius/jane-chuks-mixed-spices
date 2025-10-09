@@ -51,11 +51,6 @@ export function AdminLoginForm() {
         <p className="text-sm text-neutral-600 text-center">
           Enter your credentials to access the admin panel
         </p>
-        <div className="mt-4 p-3 bg-muted rounded-lg text-xs space-y-1">
-          <p className="font-semibold text-center">Demo Admin Credentials:</p>
-          <p>Email: admin@janechucks.com</p>
-          <p>Password: Admin@123</p>
-        </div>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -66,7 +61,7 @@ export function AdminLoginForm() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@janechucks.com"
+                placeholder="enter your admin email"
                 className="pl-10"
                 value={formData.email}
                 onChange={(e) =>

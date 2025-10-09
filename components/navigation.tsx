@@ -22,26 +22,21 @@ import {
   Package,
   Settings,
 } from "lucide-react";
-import { useUser } from "@/components/auth/auth-provider";
+import { useAuth, useUser } from "@/components/auth/auth-provider";
 import Image from "next/image";
 import { getInitials } from "@/lib/utils";
+import { publicNavItems, adminNavItems } from "@/lib/const";
 import { useRouter } from "next/navigation";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
-  const user = useUser();
+  const { user, isLoading, signOut } = useAuth();
   const router = useRouter();
 
-  const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/products", label: "Products" },
-    { href: "/static/about", label: "About Us" },
-    { href: "/static/services", label: "Services" },
-    // { href: "/testimonials", label: "Testimonials" },
-    { href: "/static/contact", label: "Contact" },
-  ];
+  const isAdmin = !!(user && (user.role === "ADMIN" || user.isAdmin));
+  const navItems = isAdmin ? adminNavItems : publicNavItems;
 
   useEffect(() => {
     let abort = false;
@@ -100,9 +95,9 @@ export function Navigation() {
   }, [user]);
 
   const handleLogout = async () => {
-    await user?.signOut();
+    await signOut();
     setIsOpen(false);
-    router.push("/"); // optional
+    router.push("/products"); // optional
   };
 
   return (
@@ -126,7 +121,10 @@ export function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium transition-colors hover:text-primary">
+                className="text-sm flex gap-3 font-medium transition-colors hover:text-primary">
+                {"icon" in item && item.icon ? (
+                  <item.icon className="h-4 w-4" />
+                ) : null}
                 {item.label}
               </Link>
             ))}
@@ -140,118 +138,129 @@ export function Navigation() {
               className="hidden sm:inline-flex">
               <Search className="h-4 w-4" />
             </Button>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative"
-              asChild
-              aria-label={`Cart (${cartCount})`}>
-              <Link href="/cart">
-                <ShoppingCart className="h-4 w-4" />
-                {cartCount > 0 && (
-                  <Badge
-                    variant="destructive"
-                    className="absolute -top-2 -right-2 h-5 min-w-[1.25rem] px-1 rounded-full p-0 text-[10px] leading-none flex items-center justify-center">
-                    {cartCount}
-                  </Badge>
-                )}
-              </Link>
-            </Button>
+            {!isAdmin && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative"
+                asChild
+                aria-label={`Cart (${cartCount})`}>
+                <Link href="/cart">
+                  <ShoppingCart className="h-4 w-4" />
+                  {cartCount > 0 && (
+                    <Badge
+                      variant="destructive"
+                      className="absolute -top-2 -right-2 h-5 min-w-[1.25rem] px-1 rounded-full p-0 text-[10px] leading-none flex items-center justify-center">
+                      {cartCount}
+                    </Badge>
+                  )}
+                </Link>
+              </Button>
+            )}
 
             {/* User Menu */}
             <div className="hidden sm:block">
-              {user ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+              {!isAdmin && (
+                <div className="hidden md:block">
+                  {user ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="relative h-9 w-9 rounded-full"
+                          aria-label="Account menu">
+                          <Avatar className="h-9 w-9">
+                            <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                              {getInitials(user.name || user.email)}
+                            </AvatarFallback>
+                          </Avatar>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        className="w-56"
+                        align="end"
+                        forceMount>
+                        <div className="flex items-center justify-start gap-2 p-2">
+                          <div className="flex flex-col space-y-1 leading-none">
+                            {user.name && (
+                              <p className="font-medium">{user.name}</p>
+                            )}
+                            <p className="w-[200px] truncate text-sm text-muted-foreground">
+                              {user.email}
+                            </p>
+                          </div>
+                        </div>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <Link href="/profile">
+                            <User className="mr-2 h-4 w-4" />
+                            Profile
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href="/orders">
+                            <Package className="mr-2 h-4 w-4" />
+                            Orders
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href="/profile?tab=settings">
+                            <Settings className="mr-2 h-4 w-4" />
+                            Settings
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={handleLogout}>
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Log out
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
                     <Button
                       variant="ghost"
-                      className="relative h-9 w-9 rounded-full"
-                      aria-label="Account menu">
-                      <Avatar className="h-9 w-9">
-                        <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                          {getInitials(user.displayName || user.primaryEmail)}
-                        </AvatarFallback>
-                      </Avatar>
+                      size="icon"
+                      asChild
+                      aria-label="Sign in">
+                      <Link href="/auth/login">
+                        <User className="h-4 w-4" />
+                      </Link>
                     </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <div className="flex items-center justify-start gap-2 p-2">
-                      <div className="flex flex-col space-y-1 leading-none">
-                        {user.displayName && (
-                          <p className="font-medium">{user.displayName}</p>
-                        )}
-                        <p className="w-[200px] truncate text-sm text-muted-foreground">
-                          {user.primaryEmail}
-                        </p>
-                      </div>
-                    </div>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link href="/profile">
-                        <User className="mr-2 h-4 w-4" />
-                        Profile
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/orders">
-                        <Package className="mr-2 h-4 w-4" />
-                        Orders
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/profile?tab=settings">
-                        <Settings className="mr-2 h-4 w-4" />
-                        Settings
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout}>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Log out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  asChild
-                  aria-label="Sign in">
-                  <Link href="/auth/login">
-                    <User className="h-4 w-4" />
-                  </Link>
-                </Button>
+                  )}
+                </div>
               )}
             </div>
 
-            <div className="sm:hidden">
-              {user ? (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  asChild
-                  aria-label="Profile">
-                  <Link href="/profile">
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                        {getInitials(user.displayName || user.primaryEmail)}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Link>
-                </Button>
-              ) : (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  asChild
-                  aria-label="Sign in">
-                  <Link href="/auth/login">
-                    <User className="h-4 w-4" />
-                  </Link>
-                </Button>
-              )}
-            </div>
+            {/* Hide this block for admins */}
+            {!isAdmin && (
+              <div className="md:hidden">
+                {user ? (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    asChild
+                    aria-label="Profile">
+                    <Link href="/profile">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                          {getInitials(user.name || user.email)}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    asChild
+                    aria-label="Sign in">
+                    <Link href="/auth/login">
+                      <User className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            )}
 
             {/* Mobile Menu */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -271,65 +280,70 @@ export function Navigation() {
                 <div className="mt-6 mb-4 flex items-center gap-3">
                   <Avatar className="h-10 w-10">
                     <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                      {getInitials(user?.displayName || user?.primaryEmail)}
+                      {getInitials(user?.name || user?.email)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="min-w-0">
                     <p className="font-medium truncate">
-                      {user?.displayName || "Welcome!"}
+                      {user?.name || "Welcome!"}
                     </p>
                     <p className="text-xs text-muted-foreground truncate">
-                      {user?.primaryEmail || "Sign in to view your account"}
+                      {user?.email || "Sign in to view your account"}
                     </p>
                   </div>
                 </div>
 
                 {/* Quick actions */}
-                <div className="grid w-full grid-cols-3 gap-2 mb-4">
-                  <Button
-                    asChild
-                    variant="secondary"
-                    className="bg-secondary/60 w-full px-2">
-                    <Link href="/cart" onClick={() => setIsOpen(false)}>
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      Cart
-                      {cartCount > 0 && (
-                        <span className="ml-1 text-xs font-semibold">
-                          ({cartCount})
-                        </span>
-                      )}
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="secondary"
-                    className="bg-secondary/60">
-                    <Link href="/orders" onClick={() => setIsOpen(false)}>
-                      <Package className="mr-2 h-4 w-4" />
-                      Orders
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="secondary"
-                    className="bg-secondary/60">
-                    <Link
-                      href={user ? "/profile" : "/auth/login"}
-                      onClick={() => setIsOpen(false)}>
-                      <User className="mr-2 h-4 w-4" />
-                      {user ? "Profile" : "Login"}
-                    </Link>
-                  </Button>
-                </div>
+                {!isAdmin && (
+                  <div className="grid w-full grid-cols-3 gap-2 mb-4">
+                    <Button
+                      asChild
+                      variant="secondary"
+                      className="bg-secondary/60 w-full px-2">
+                      <Link href="/cart" onClick={() => setIsOpen(false)}>
+                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        Cart
+                        {cartCount > 0 && (
+                          <span className="ml-1 text-xs font-semibold">
+                            ({cartCount})
+                          </span>
+                        )}
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      variant="secondary"
+                      className="bg-secondary/60">
+                      <Link href="/orders" onClick={() => setIsOpen(false)}>
+                        <Package className="mr-2 h-4 w-4" />
+                        Orders
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      variant="secondary"
+                      className="bg-secondary/60">
+                      <Link
+                        href={user ? "/profile" : "/auth/login"}
+                        onClick={() => setIsOpen(false)}>
+                        <User className="mr-2 h-4 w-4" />
+                        {user ? "Profile" : "Login"}
+                      </Link>
+                    </Button>
+                  </div>
+                )}
 
-                {/* Nav items */}
+                {/* Nav items - render admin links for admin users, otherwise public links */}
                 <div className="flex flex-col space-y-4">
                   {navItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="text-base font-medium transition-colors hover:text-primary"
+                      className="flex items-center gap-2 text-base font-medium transition-colors hover:text-primary"
                       onClick={() => setIsOpen(false)}>
+                      {"icon" in item && item.icon ? (
+                        <item.icon className="h-4 w-4" />
+                      ) : null}
                       {item.label}
                     </Link>
                   ))}

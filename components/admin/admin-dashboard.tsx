@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { getAdminStats } from "@/app/actions/admin";
 import { toast } from "sonner";
+import { fmtNGN } from "@/lib/utils";
 
 interface StatsData {
   totalUsers: number;
@@ -53,10 +54,60 @@ export function AdminDashboard() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-spice-orange mx-auto"></div>
-          <p className="mt-4 text-neutral-600">Loading dashboard...</p>
+      <div className="space-y-8 animate-pulse">
+        {/* Skeleton for Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="border border-neutral-200 rounded-xl shadow-sm p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <div className="h-3 w-24 bg-neutral-200 rounded" />
+                  <div className="h-6 w-16 bg-neutral-300 rounded" />
+                  <div className="h-3 w-12 bg-neutral-200 rounded" />
+                </div>
+                <div className="h-10 w-10 bg-neutral-200 rounded-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Skeleton for Recent Orders */}
+        <div className="border border-neutral-200 rounded-xl shadow-sm">
+          <div className="p-4 border-b border-neutral-200">
+            <div className="h-5 w-32 bg-neutral-200 rounded" />
+          </div>
+          <div className="p-4">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-neutral-200">
+                  {["Order ID", "Customer", "Product", "Amount", "Status"].map(
+                    (col) => (
+                      <th
+                        key={col}
+                        className="text-left py-3 px-4 font-medium text-neutral-600">
+                        {col}
+                      </th>
+                    )
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {[1, 2, 3, 4].map((i) => (
+                  <tr key={i} className="border-b border-neutral-100">
+                    {Array(5)
+                      .fill(0)
+                      .map((_, idx) => (
+                        <td key={idx} className="py-3 px-4">
+                          <div className="h-4 w-24 bg-neutral-200 rounded" />
+                        </td>
+                      ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     );
@@ -119,7 +170,7 @@ export function AdminDashboard() {
                   <p className="text-sm font-medium text-neutral-600">
                     {stat.title}
                   </p>
-                  <p className="text-2xl font-bold text-spice-brown mt-1">
+                  <p className="text-2xl font-bold text-primary mt-1">
                     {stat.value}
                   </p>
                   <div className="flex items-center mt-2">
@@ -149,7 +200,7 @@ export function AdminDashboard() {
       {/* Recent Orders */}
       <Card className="border-0 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-spice-brown">Recent Orders</CardTitle>
+          <CardTitle className="text-primary">Recent Orders</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -187,23 +238,27 @@ export function AdminDashboard() {
                     <tr
                       key={order.id}
                       className="border-b border-neutral-100 hover:bg-neutral-50">
-                      <td className="py-3 px-4 font-medium text-spice-brown">
+                      <td className="py-3 px-4 md:font-medium font-normal text-primary">
                         {order.id}
                       </td>
                       <td className="py-3 px-4">{order.customer}</td>
                       <td className="py-3 px-4">{order.product}</td>
-                      <td className="py-3 px-4 font-medium">
-                        ₦{order.amount.toLocaleString()}
+                      <td className="py-3 px-4 md:font-medium font-normal">
+                        {fmtNGN(order.amount)}
                       </td>
                       <td className="py-3 px-4">
                         <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            order.status === "processing"
+                          className={`px-2 py-1 rounded-full text-xs md:font-medium font-normal ${
+                            order.status === "pending"
+                              ? "bg-neutral-200 text-neutral-800"
+                              : order.status === "processing"
                               ? "bg-yellow-100 text-yellow-800"
                               : order.status === "shipped"
                               ? "bg-blue-100 text-blue-800"
                               : order.status === "delivered"
                               ? "bg-green-100 text-green-800"
+                              : order.status === "cancelled"
+                              ? "bg-red-100 text-red-700"
                               : "bg-gray-100 text-gray-800"
                           }`}>
                           {order.status.charAt(0).toUpperCase() +

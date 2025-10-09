@@ -87,13 +87,11 @@ export function OrderTrackingModal({
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="font-medium text-neutral-700">Order ID</p>
-                <p className="text-spice-brown">{order.id}</p>
+                <p className="text-chart-5">{order.id}</p>
               </div>
               <div>
                 <p className="font-medium text-neutral-700">Tracking Number</p>
-                <p className="text-spice-brown">
-                  {order.trackingNumber || "-"}
-                </p>
+                <p className="text-chart-5">{order.trackingNumber || "-"}</p>
               </div>
               <div>
                 <p className="font-medium text-neutral-700">Status</p>
@@ -105,7 +103,7 @@ export function OrderTrackingModal({
                 <p className="font-medium text-neutral-700">
                   {order.deliveredAt ? "Delivered On" : "Estimated Delivery"}
                 </p>
-                <p className="text-spice-brown">{fmtDate(eta)}</p>
+                <p className="text-chart-5">{fmtDate(eta)}</p>
               </div>
             </div>
           </div>
@@ -113,9 +111,7 @@ export function OrderTrackingModal({
           {/* Tracking Steps */}
           {!isTerminal ? (
             <div className="space-y-4">
-              <h3 className="font-semibold text-spice-brown">
-                Tracking Progress
-              </h3>
+              <h3 className="font-semibold text-chart-2">Tracking Progress</h3>
               <div className="space-y-4">
                 {trackingSteps.map((step, index) => {
                   const isCompleted = index <= curIdx;
@@ -126,7 +122,7 @@ export function OrderTrackingModal({
                       <div
                         className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
                           isCompleted
-                            ? "bg-spice-green text-white"
+                            ? "bg-chart-2 text-white"
                             : "bg-neutral-200 text-neutral-400"
                         }`}>
                         {isCompleted ? (
@@ -138,22 +134,18 @@ export function OrderTrackingModal({
                       <div className="flex-1">
                         <p
                           className={`font-medium ${
-                            isCompleted
-                              ? "text-spice-brown"
-                              : "text-neutral-400"
+                            isCompleted ? "text-chart-2" : "text-neutral-400"
                           }`}>
                           {step.label}
                         </p>
                         {isCurrent && !order.deliveredAt && (
-                          <p className="text-sm text-spice-orange">
-                            Current Status
-                          </p>
+                          <p className="text-sm text-primary">Current Status</p>
                         )}
                       </div>
                       {index < trackingSteps.length - 1 && (
                         <div
                           className={`w-px h-8 ${
-                            isCompleted ? "bg-spice-green" : "bg-neutral-200"
+                            isCompleted ? "bg-foreground" : "bg-neutral-200"
                           }`}
                         />
                       )}

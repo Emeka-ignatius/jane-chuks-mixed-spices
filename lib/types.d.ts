@@ -194,3 +194,7 @@ interface IAddress {
   postalCode?: string;
   country?: string;
 }
+interface IMaxWidthWrapper {
+  className?: string;
+  children: React.ReactNode;
+}

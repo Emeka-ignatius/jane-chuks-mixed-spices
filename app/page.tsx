@@ -7,7 +7,7 @@ import { CallToAction } from "@/components/sections/call-to-action";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen mt-10">
+    <div className="min-h-screen md:mt-0 mt-10">
       <HeroSection />
       <CategoryShowcase />
       <FeaturedProducts />

@@ -21,7 +21,7 @@ export interface AuthUser {
   email: string;
   name?: string;
   phone?: string;
-  role?: UserRole;
+  role: UserRole;
   isAdmin: boolean;
 }
 
@@ -46,6 +46,7 @@ export function generateToken(user: AuthUser): string {
     email: user.email,
     name: user.name || null,
     phone: user.phone || null,
+    role: user.role || "VISITOR",
     isAdmin: Boolean(user.isAdmin),
   };
 
@@ -80,6 +81,7 @@ export function verifyToken(token: string): AuthUser | null {
       email: String(decoded.email),
       name: decoded.name || undefined,
       phone: decoded.phone || undefined,
+      role: (decoded.role as UserRole) || "VISITOR",
       isAdmin: Boolean(decoded.isAdmin),
     };
   } catch (error) {
@@ -135,13 +137,24 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
       return null;
     }
 
-    return {
+    const authUser: AuthUser = {
       id: user.id,
       email: user.email,
-      name: user.name!,
-      phone: user.phone!,
-      isAdmin: user.isAdmin,
+      name: user.name || undefined,
+      phone: user.phone || undefined,
+      role: user.role as UserRole, // ✅ from DB
+      isAdmin: user.isAdmin || user.role === "ADMIN", // keep both
     };
+
+    // Optional: refresh cookie if role/isAdmin in token is stale or missing
+    if (
+      decoded.role !== authUser.role ||
+      decoded.isAdmin !== authUser.isAdmin
+    ) {
+      await setAuthCookie(authUser);
+    }
+
+    return authUser;
   } catch (error) {
     console.error("Get current user error:", error);
     return null;
@@ -178,10 +191,11 @@ export async function loginUser(
       email: user.email,
       name: user.name || undefined,
       phone: user.phone || undefined,
-      isAdmin: user.isAdmin,
+      role: user.role as UserRole,
+      isAdmin: user.isAdmin || user.role === "ADMIN",
     };
 
-    console.log(" Setting auth cookie");
+    // console.log(" Setting auth cookie");
     await setAuthCookie(authUser);
     console.log(" Login successful");
     return { success: true, user: authUser };
@@ -220,7 +234,8 @@ export async function registerUser(userData: {
       email: newUser.email,
       name: newUser.name || undefined,
       phone: newUser.phone || undefined,
-      isAdmin: newUser.isAdmin,
+      role: newUser.role as UserRole,
+      isAdmin: newUser.isAdmin || newUser.role === "ADMIN",
     };
 
     await setAuthCookie(authUser);
