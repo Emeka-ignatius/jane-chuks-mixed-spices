@@ -193,7 +193,7 @@ export default function AboutPage() {
               </p>
               <div className="space-y-2 text-sm text-neutral-600">
                 <p>
-                  <strong>Email:</strong> reversoploutosltd@gmail.com
+                  <strong>Email:</strong> support@biohaven.com.ng
                 </p>
                 <p>
                   <strong>Location:</strong> Calabar, Cross River State, Nigeria

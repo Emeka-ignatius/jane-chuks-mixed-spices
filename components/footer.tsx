@@ -81,13 +81,13 @@ export function Footer() {
               <div className="flex items-center space-x-2 text-sm">
                 <Mail className="h-4 w-4 text-primary" />
                 <span className="text-secondary-foreground/80">
-                  reversoploutosltd@gmail.com
+                  support@biohaven.com.ng
                 </span>
               </div>
               <div className="flex items-center space-x-2 text-sm">
                 <Phone className="h-4 w-4 text-primary" />
                 <span className="text-secondary-foreground/80">
-                  +234 XXX XXX XXXX
+                  08139146080
                 </span>
               </div>
               <div className="flex items-start space-x-2 text-sm">
@@ -118,8 +118,8 @@ export function Footer() {
 
         <div className="border-t border-secondary-foreground/20 mt-8 pt-8 text-center">
           <p className="text-sm text-secondary-foreground/60">
-            © 2025 JaneChucks Mixed Spices. All rights reserved. | Produced and
-            Packaged by Reverso-Ploutos Ltd
+            © 2025 BioHaven. All rights reserved. | Produced and Packaged by
+            Reverso-Ploutos Ltd
           </p>
         </div>
       </div>

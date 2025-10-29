@@ -309,7 +309,7 @@ export function CheckoutForm({
                   <Input
                     id="phone"
                     type="tel"
-                    placeholder="+234 XXX XXX XXXX"
+                    placeholder="08139146080"
                     className="pl-10"
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}

@@ -45,7 +45,7 @@ const features = [
     icon: Users,
     title: "Trusted by Thousands",
     description:
-      "Join thousands of satisfied customers who have made JaneChucks their trusted spice partner.",
+      "Join thousands of satisfied customers who have made BioHaven their trusted spice partner.",
     color: "from-indigo-500 to-indigo-600",
   },
 ];
@@ -64,7 +64,7 @@ export function WhyChooseUs() {
             </Badge>
 
             <h2 className="text-3xl md:text-4xl font-bold gradient-text text-balance">
-              The JaneChucks Difference
+              The BioHaven Difference
             </h2>
 
             <p className="section-text text-muted-foreground max-w-2xl mx-auto text-pretty">

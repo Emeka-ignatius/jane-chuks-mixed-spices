@@ -30,9 +30,7 @@ export function AdminSidebar() {
       <div className="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
         {/* Logo */}
         <div className="flex items-center justify-center h-16 px-4 border-b border-neutral-200">
-          <h1 className="text-xl font-bold text-spice-brown">
-            JaneChucks Admin
-          </h1>
+          <h1 className="text-xl font-bold text-spice-brown">BioHaven Admin</h1>
         </div>
 
         {/* If not logged in, show Login CTA and stop */}
