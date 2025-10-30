@@ -12,7 +12,7 @@ import { AuthProvider } from "@/components/auth/auth-provider";
 import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
-  title: "JaneChuks Mixed Spices - Premium Natural Spice Blends",
+  title: "BioHaven - Premium Natural Spice Blends",
   description:
     "Discover premium mixed spices crafted for men, women, and multipurpose use. Natural ingredients for enhanced nutrition and wellness.",
 };
