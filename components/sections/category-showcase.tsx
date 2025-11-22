@@ -16,7 +16,7 @@ const categories = [
     description:
       "Specially formulated with ginger, cinnamon, garlic, and olive leaf to support men's health and energy levels.",
     image: "/images/for-men.png",
-    price: "₦2,500",
+    price: "₦15,000",
     icon: Users,
     color: "from-secondary to-secondary/80",
     badge: "Men's Health",
@@ -28,7 +28,7 @@ const categories = [
     description:
       "A nourishing blend with watermelon seed, carrot seed, ginger, tigernuts, date, and maca root for women's wellness.",
     image: "/images/for-women.jpg",
-    price: "₦2,500",
+    price: "₦15,000",
     icon: Heart,
     color: "from-accent to-accent/80",
     badge: "Women's Wellness",
@@ -40,7 +40,7 @@ const categories = [
     description:
       "Our versatile blend perfect for the whole family. Enhanced nutrition and flavor for all your cooking needs.",
     image: "/images/multi-purpose.jpg",
-    price: "₦2,200",
+    price: "₦15,000",
     icon: Sparkles,
     color: "from-primary to-primary/80",
     badge: "Family Blend",
