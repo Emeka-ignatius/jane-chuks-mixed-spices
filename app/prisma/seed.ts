@@ -31,7 +31,7 @@ async function main() {
       slug: "multi-purpose-spice-mix",
       description:
         "A versatile blend of premium spices perfect for all your cooking needs. This carefully crafted mix combines aromatic herbs and spices to enhance the flavor of any dish.",
-      price: 2200,
+      price: 15000,
       category: ProductCategory.multipurpose,
       stockQuantity: 100,
       imageUrl: "/images/multi-purpose.jpg",
@@ -42,7 +42,7 @@ async function main() {
       slug: "womens-special-blend",
       description:
         "A specially formulated spice blend designed with women's health and taste preferences in mind. Rich in flavor and beneficial nutrients.",
-      price: 2500,
+      price: 15000,
       category: ProductCategory.women,
       stockQuantity: 75,
       imageUrl: "/images/for-women.jpg",
@@ -53,7 +53,7 @@ async function main() {
       slug: "mens-power-mix",
       description:
         "A robust and bold spice blend crafted for hearty meals. Perfect for grilling, roasting, and adding depth to your favorite dishes.",
-      price: 2500,
+      price: 15000,
       category: ProductCategory.men,
       stockQuantity: 80,
       imageUrl: "/images/for-men.png",

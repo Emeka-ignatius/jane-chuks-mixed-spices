@@ -93,7 +93,7 @@ export function Footer() {
               <div className="flex items-start space-x-2 text-sm">
                 <MapPin className="h-4 w-4 text-primary mt-0.5" />
                 <span className="text-secondary-foreground/80">
-                  Calabar, Cross River State, Nigeria
+                  Ikeja, Lagos State, Nigeria
                 </span>
               </div>
             </div>
