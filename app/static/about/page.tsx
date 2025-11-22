@@ -144,7 +144,7 @@ export default function AboutPage() {
                   },
                   {
                     name: "For Men",
-                    image: "/images/for-men.png",
+                    image: "/images/for-men.jpg",
                     ingredients: "Ginger, Cinnamon, Garlic, Olive leaf",
                     benefits: "Promotes men's strength and energy",
                   },

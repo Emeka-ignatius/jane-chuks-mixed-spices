@@ -37,7 +37,7 @@ const heroSlides = [
     subtitle: "Strength & Energy",
     description:
       "A powerful combination of ginger, cinnamon, garlic, and olive leaf specially formulated to support men's health and vitality.",
-    image: "/images/for-men.png",
+    image: "/images/for-men.jpg",
     badge: "Men's Vitality",
     cta: "Discover Men's Blend",
     accent: "secondary",

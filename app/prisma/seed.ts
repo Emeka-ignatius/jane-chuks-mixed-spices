@@ -56,7 +56,7 @@ async function main() {
       price: 15000,
       category: ProductCategory.men,
       stockQuantity: 80,
-      imageUrl: "/images/for-men.png",
+      imageUrl: "/images/for-men.jpg",
       featured: true,
     },
   ];

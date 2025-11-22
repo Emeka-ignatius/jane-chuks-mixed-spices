@@ -15,7 +15,7 @@ const categories = [
     subtitle: "Strength & Vitality",
     description:
       "Specially formulated with ginger, cinnamon, garlic, and olive leaf to support men's health and energy levels.",
-    image: "/images/for-men.png",
+    image: "/images/for-men.jpg",
     price: "₦15,000",
     icon: Users,
     color: "from-secondary to-secondary/80",

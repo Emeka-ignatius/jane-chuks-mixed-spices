@@ -44,7 +44,7 @@ const featuredProducts = [
     category: "men",
     price: 15000,
     originalPrice: 20000,
-    image: "/images/for-men.png",
+    image: "/images/for-men.jpg",
     rating: 4.7,
     reviews: 76,
     badge: "New",
